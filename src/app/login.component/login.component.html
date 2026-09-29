@@ -1,1 +1,24 @@
-<p>login.component works!</p>
+<nz-card>
+  <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="login()">
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your email address!">
+        <nz-input-wrapper>
+          <nz-icon nzInputPrefix nzType="user" />
+          <input type="text" nz-input formControlName="email" placeholder="Email address" />
+        </nz-input-wrapper>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-password>
+          <nz-icon nzInputPrefix nzType="lock" />
+          <input nz-input formControlName="password" placeholder="Password" />
+        </nz-input-password>
+      </nz-form-control>
+    </nz-form-item>
+    <button nz-button
+            [disabled]="loginForm.invalid"
+            [nzLoading]="isLoading()"
+            class="login-form-button login-form-margin" nzType="primary">Log in</button>
+  </form>
+</nz-card>
