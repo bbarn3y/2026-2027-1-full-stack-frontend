@@ -12,7 +12,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { delay, of, tap } from 'rxjs';
+import { delay, finalize, of, tap } from 'rxjs';
+import { ClientService } from '../_service/client.service';
+import { UserService } from '../_service/user.service';
+import { routeToLobby } from '../_helpers/routing.helper';
 
 @Component({
   imports: [
@@ -30,7 +33,9 @@ import { delay, of, tap } from 'rxjs';
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
+  private readonly clientService: ClientService = inject(ClientService);
   private readonly fb: NonNullableFormBuilder = inject(NonNullableFormBuilder);
+  private readonly userService: UserService = inject(UserService);
 
   readonly isLoading = signal(false);
   readonly loginForm: FormGroup = this.fb.group(
@@ -44,14 +49,26 @@ export class LoginComponent {
   constructor(private router: Router) {}
 
   login() {
-    this.isLoading.set(true)
-    of({ token: 'LoginToken' })
+    // of({ token: 'LoginToken' })
+    const doLogin$ = this.clientService.login();
+
+    this.isLoading.set(true);
+    doLogin$
       .pipe(
-        tap((value) => console.log(value.token)),
+        tap((token) => console.log(token)),
         delay(3000),
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
       )
-      .subscribe((value) => {
-        this.isLoading.set(false);
+      .subscribe({
+        next: (token: string) => {
+          this.userService.saveToken(token);
+          routeToLobby(this.router);
+        },
+        error: (err) => {
+          console.log('Login failed:', err);
+        },
       });
   }
 }
