@@ -6,6 +6,7 @@ import { publicGuard } from './_guards/public.guard';
 export const APP_ROUTES = {
   lobby: 'lobby',
   login: 'login',
+  test: 'test',
 } as const;
 export const routes: Routes = [
   {
@@ -15,6 +16,12 @@ export const routes: Routes = [
   },
   {
     path: APP_ROUTES.lobby,
+    loadComponent: () => import('./lobby.component/lobby.component').then((c => c.LobbyComponent)),
+    canActivate: [privateGuard],
+    canActivateChild: [privateGuard]
+  },
+  {
+    path: APP_ROUTES.test,
     loadComponent: () => import('./lobby.component/lobby.component').then((c => c.LobbyComponent)),
     canActivate: [privateGuard],
     canActivateChild: [privateGuard]

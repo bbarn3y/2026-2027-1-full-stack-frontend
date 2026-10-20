@@ -9,5 +9,7 @@ export const privateGuard: CanActivateFn = (route, state) => {
 
   return userService.isLoggedIn()
     ? true
-    : router.createUrlTree(['/', APP_ROUTES.login]);
+    : router.createUrlTree(['/', APP_ROUTES.login], {
+      queryParams: { returnUrl: state.url }
+    });
 };

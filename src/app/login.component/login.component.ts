@@ -11,7 +11,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { delay, finalize, of, tap } from 'rxjs';
 import { ClientService } from '../_service/client.service';
 import { UserService } from '../_service/user.service';
@@ -46,7 +46,8 @@ export class LoginComponent {
     { updateOn: 'blur' },
   );
 
-  constructor(private router: Router) {}
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router) {}
 
   login() {
     // of({ token: 'LoginToken' })
@@ -64,7 +65,13 @@ export class LoginComponent {
       .subscribe({
         next: (token: string) => {
           this.userService.saveToken(token);
-          routeToLobby(this.router);
+
+          const returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl');
+          if (returnUrl && returnUrl.startsWith('/')) {
+            void this.router.navigateByUrl(returnUrl);
+          } else {
+            routeToLobby(this.router);
+          }
         },
         error: (err) => {
           console.log('Login failed:', err);

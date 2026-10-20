@@ -1,0 +1,23 @@
+<nz-card style="width:300px;"
+         [nzActions]="[actionSelect, actionEdit, actionRemove]">
+  <nz-card-meta [nzTitle]="character().name"
+                nzDescription="This is the description" />
+</nz-card>
+
+<ng-template #actionSelect>
+  <nz-icon nzType="select" (click)="characterSelected.emit(character())" />
+</ng-template>
+<ng-template #actionEdit>
+  <nz-icon nzType="edit" />
+</ng-template>
+<ng-template #actionRemove>
+  <nz-icon nzType="delete" />
+</ng-template>
+
+<!--
+<ng-template #nameTpl let-name="nev">
+  <p>Hello {{ name }}</p>
+</ng-template>
+<ng-container *ngTemplateOutlet="nameTpl; context: { nev: 'Alice'  }"></ng-container>
+<ng-container *ngTemplateOutlet="nameTpl; context: { nev: 'Bob'  }"></ng-container>
+-->
