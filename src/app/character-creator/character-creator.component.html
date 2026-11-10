@@ -1,0 +1,78 @@
+﻿<form nz-form (submit)="saveCharacter($event)">
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="8">Name</nz-form-label>
+    <nz-form-control
+      [nzSpan]="14"
+      [nzValidateStatus]="characterForm.name().touched() && characterForm.name().invalid() ? 'error' : ''"
+      [nzErrorTip]="nameErrorTemplate"
+    >
+      <input [formField]="characterForm.name" nz-input/>
+    </nz-form-control>
+
+    <ng-template #nameErrorTemplate>
+      @for (error of characterForm.name().errors(); track error.kind) {
+        <div>{{ error.message }}</div>
+      }
+    </ng-template>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="8">Image</nz-form-label>
+    <nz-form-control
+      [nzSpan]="14"
+      [nzValidateStatus]="characterForm.image().touched() && characterForm.image().invalid() ? 'error' : ''"
+      [nzErrorTip]="imageErrorTemplate"
+    >
+      <input [formField]="characterForm.image" nz-input/>
+    </nz-form-control>
+
+    <ng-template #imageErrorTemplate>
+      @for (error of characterForm.image().errors(); track error.kind) {
+        <div>{{ error.message }}</div>
+      }
+    </ng-template>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="8">Class</nz-form-label>
+    <nz-form-control
+      [nzSpan]="14"
+      [nzValidateStatus]="characterForm.characterClass().touched() && characterForm.characterClass().invalid() ? 'error' : ''"
+      [nzErrorTip]="classErrorTemplate"
+    >
+      <nz-select [formField]="characterForm.characterClass">
+        <nz-option [nzValue]="CharacterClass.MAGE" nzLabel="Mage"></nz-option>
+        <nz-option [nzValue]="CharacterClass.ROGUE" nzLabel="Rogue"></nz-option>
+        <nz-option [nzValue]="CharacterClass.WARRIOR" nzLabel="Warrior"></nz-option>
+      </nz-select>
+    </nz-form-control>
+
+    <ng-template #classErrorTemplate>
+      @for (error of characterForm.characterClass().errors(); track error.kind) {
+        <div>{{ error.message }}</div>
+      }
+    </ng-template>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="8">Max HP</nz-form-label>
+    <nz-form-control
+      [nzSpan]="14"
+      [nzValidateStatus]="(characterForm.maxHp().touched() || characterForm.characterClass().touched())
+        && maxHpErrors().length > 0 ? 'error' : ''"
+      [nzErrorTip]="maxHpErrorTemplate"
+    >
+      <nz-input-number [formField]="characterForm.maxHp"></nz-input-number>
+    </nz-form-control>
+
+    <ng-template #maxHpErrorTemplate>
+      @for (error of maxHpErrors(); track error.kind) {
+        <div>{{ error.message }}</div>
+      }
+    </ng-template>
+  </nz-form-item>
+
+  <button nz-button type="submit" [disabled]="characterForm().invalid()">Save character</button>
+
+</form>

@@ -1,13 +1,15 @@
 @if (characters().length === 0) {
   <nz-empty nzNotFoundContent="The character list is empty!"></nz-empty>
 } @else {
-  @for(char of characters(); track char.name) {
-    <app-character-card [character]="char"
-      (characterSelected)="selectCharacter($event)"
-    >
+  <div style="display: flex; flex-wrap: wrap">
+    @for(char of characters(); track char.name) {
+      <app-character-card [character]="char"
+        (characterSelected)="selectCharacter($event)"
+      >
 
-    </app-character-card>
-  }
+      </app-character-card>
+    }
+  </div>
 }
 
 <!--

@@ -1,17 +1,38 @@
 <nz-card style="width:300px;"
+         [nzCover]="coverTemplate"
          [nzActions]="[actionSelect, actionEdit, actionRemove]">
   <nz-card-meta [nzTitle]="character().name"
-                nzDescription="This is the description" />
+                [nzDescription]="descriptionTemplate" />
 </nz-card>
 
 <ng-template #actionSelect>
   <nz-icon nzType="select" (click)="characterSelected.emit(character())" />
 </ng-template>
 <ng-template #actionEdit>
-  <nz-icon nzType="edit" />
+  <nz-icon nzType="edit" (click)="editCharacter(character())" />
 </ng-template>
 <ng-template #actionRemove>
-  <nz-icon nzType="delete" />
+  <nz-icon nzType="delete"
+           nz-popconfirm
+           nzPopconfirmTitle="Are you sure you wish to delete this character?"
+           nzPopconfirmPlacement="bottom"
+           nzOkText="Yes"
+           nzCancelText="No"
+           (nzOnConfirm)="characterService.removeCharacter(character().id)"
+  />
+</ng-template>
+
+<ng-template #coverTemplate>
+  <img [alt]="character().characterClass" [src]="character().image" />
+</ng-template>
+
+<ng-template #descriptionTemplate>
+  <div>
+    {{ character().characterClass }}
+  </div>
+  <div>
+    {{ character().maxHp }}
+  </div>
 </ng-template>
 
 <!--

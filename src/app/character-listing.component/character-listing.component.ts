@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NzEmptyComponent } from 'ng-zorro-antd/empty';
 import { CharacterCardComponent } from '../character-card.component/character-card.component';
+import { CharacterService } from '../_service/character.service';
 
 @Component({
   imports: [CharacterCardComponent, NzEmptyComponent],
@@ -9,9 +10,11 @@ import { CharacterCardComponent } from '../character-card.component/character-ca
   templateUrl: './character-listing.component.html',
 })
 export class CharacterListingComponent {
-  readonly characters = signal([{ name: 'Test Tamás' }, { name: 'Test Two' }]);
+  private readonly characterService = inject(CharacterService);
 
-  selectCharacter(character: { name: string } ) {
+  readonly characters = this.characterService.characters;
+
+  selectCharacter(character: { name: string }) {
     console.log(character);
   }
 }
